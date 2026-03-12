@@ -1,0 +1,9 @@
+/venv
+venv
+settings_base.py
+__pycache__/
+*.pyc
+
+/.env
+
+index-ycYrjJR6.js
