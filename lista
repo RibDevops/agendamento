@@ -1,0 +1,97 @@
+.
+├── agenda
+│   ├── admin.py
+│   ├── apps.py
+│   ├── hash_utils.py
+│   ├── __init__.py
+│   ├── migrations
+│   │   ├── 0001_initial.py
+│   │   └── __init__.py
+│   ├── models.py
+│   ├── scraper.py
+│   ├── services
+│   │   ├── enviar_tarefas.py
+│   │   ├── eventos.py
+│   │   ├── executar_robo.py
+│   │   ├── __init__.py
+│   │   ├── teste.py
+│   │   └── whatsapp_mensagem.py
+│   ├── services.py
+│   ├── tests.py
+│   ├── urls.py
+│   ├── utils
+│   │   └── hash_evento.py
+│   ├── views
+│   │   ├── __init__.py
+│   │   └── views_salvar.py
+│   ├── views.py
+│   └── whatsapp.py
+├── comandos.txt
+├── core
+│   ├── asgi.py
+│   ├── __init__.py
+│   ├── settings.py
+│   ├── urls.py
+│   └── wsgi.py
+├── db.sqlite3
+├── docker-compose.yml
+├── docker.txt
+├── evolution
+│   ├── app.py
+│   ├── docker-compose.yml
+│   └── __init__.py
+├── index-ycYrjJR6.js
+├── lista
+├── manage.py
+├── README.md
+├── requirements.txt
+├── templates
+│   ├── accounts
+│   │   ├── alterar_senha.html
+│   │   ├── login.html
+│   │   ├── password_change_done.html
+│   │   ├── password_change.html
+│   │   ├── usuario_form.html
+│   │   └── usuarios_list.html
+│   ├── base.html
+│   ├── cal
+│   │   ├── calendar.html
+│   │   ├── carga_confirm_delete.html
+│   │   ├── carga_form.html
+│   │   ├── carga_list.html
+│   │   ├── carga_semanal.html
+│   │   ├── categoria
+│   │   │   ├── categoria_form.html
+│   │   │   ├── categoria_form_modal.html
+│   │   │   └── categoria_list.html
+│   │   ├── categoria_list.html
+│   │   ├── dashboard_profissional.html
+│   │   ├── enfermeiro_confirm_delete.html
+│   │   ├── enfermeiro_form.html
+│   │   ├── enfermeiro_list.html
+│   │   ├── event.html
+│   │   ├── lista_eventos.html
+│   │   ├── relatorio_semanal.html
+│   │   ├── tipoturno_confirm_delete.html
+│   │   ├── tipoturno_form.html
+│   │   └── tipoturno_list.html
+│   ├── home.html
+│   ├── integracao.html
+│   └── navbar.html
+├── test-evolution.sh
+└── whatsapp
+    ├── admin.py
+    ├── apps.py
+    ├── evolution_client.py
+    ├── __init__.py
+    ├── migrations
+    │   ├── 0001_initial.py
+    │   └── __init__.py
+    ├── models.py
+    ├── serializers.py
+    ├── services.py
+    ├── tests.py
+    ├── urls.py
+    └── views.py
+
+13 directories, 81 files

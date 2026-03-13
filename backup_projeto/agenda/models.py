@@ -71,11 +71,6 @@ class Aluno(models.Model):
         blank=True,
         null=True
     )
-    telefone = models.CharField(
-        max_length=20,
-        blank=True,
-        null=True
-    )
 
     criado_em = models.DateTimeField(
         auto_now_add=True
