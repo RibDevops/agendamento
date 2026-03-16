@@ -1,0 +1,277 @@
+🧠 Visão geral do sistema
+
+O sistema faz 5 coisas principais:
+
+1️⃣ Conecta na agenda escolar (Bernoulli)
+2️⃣ Extrai eventos/tarefas com Playwright
+3️⃣ Salva os eventos no banco
+4️⃣ Verifica quais são novos
+5️⃣ Envia somente os novos no WhatsApp
+6️⃣ Registra no banco que a mensagem foi enviada
+
+📁 Estrutura simplificada do projeto
+agenda/
+
+agenda_robot.py
+services/
+    sync_agenda.py
+    envio_service.py
+tasks/
+    executar_robo.py
+storage/
+    cookies.json
+
+models.py
+🔁 Fluxo completo da aplicação
+1️⃣ Início da execução
+
+Arquivo:
+
+agenda/tasks/executar_robo.py
+
+Função:
+
+executar()
+
+Função deste arquivo:
+
+✔ Iniciar o processo de sincronização da agenda
+
+Ele chama:
+
+sincronizar_agenda()
+
+Arquivo chamado:
+
+agenda/services/sync_agenda.py
+2️⃣ Sincronização da agenda
+
+Arquivo:
+
+agenda/services/sync_agenda.py
+
+Função principal:
+
+sincronizar_agenda()
+
+Passos executados:
+
+PASSO 1
+
+Buscar conexões de agenda cadastradas
+
+Tabela:
+
+ConexaoAgenda
+
+Exemplo:
+
+id	turma	login	senha
+1	7A	aluno	senha
+
+Código faz:
+
+SELECT * FROM conexao_agenda WHERE ativo = true
+PASSO 2
+
+Para cada conexão encontrada:
+
+Executa o robô.
+
+Chama função:
+
+extrair_eventos()
+
+Arquivo chamado:
+
+agenda_robot.py
+3️⃣ Execução do robô Playwright
+
+Arquivo:
+
+agenda/agenda_robot.py
+
+Função:
+
+extrair_eventos(login, senha)
+
+Passos:
+
+PASSO 3.1
+
+Abrir navegador
+
+Playwright chromium
+PASSO 3.2
+
+Verificar cookies
+
+Arquivo:
+
+storage/cookies.json
+
+Se existir:
+
+carregar cookies
+
+Se não existir:
+
+fazer login
+
+Depois:
+
+salvar cookies
+PASSO 3.3
+
+Acessar agenda
+
+Página:
+
+https://mb4.bernoulli.com.br/minhaarea/agenda
+PASSO 3.4
+
+Ler calendário
+
+Extrair:
+
+dias
+eventos
+tarefas
+arquivos
+PASSO 3.5
+
+Gerar lista de eventos
+
+Formato retornado:
+
+[
+  {
+    "data": "2026-03-17",
+    "titulo": "Matemática",
+    "descricao": "Resolver exercício página 10",
+    "tipo": "Tarefa"
+  }
+]
+
+Essa lista volta para:
+
+sync_agenda.py
+4️⃣ Salvar eventos no banco
+
+Arquivo:
+
+sync_agenda.py
+
+Tabela:
+
+EventoAgenda
+
+Antes de salvar, o sistema verifica:
+
+evento já existe?
+
+Consulta:
+
+SELECT * FROM evento_agenda
+WHERE titulo = ?
+AND data = ?
+AND conexao = ?
+
+Se não existir, salva.
+
+5️⃣ Separar eventos novos
+
+O sistema cria uma lista:
+
+novos_eventos = []
+
+Somente eventos recém criados entram nessa lista.
+
+6️⃣ Enviar mensagem WhatsApp
+
+Arquivo:
+
+agenda/services/envio_service.py
+
+Função:
+
+enviar_mensagem(eventos)
+
+URL chamada:
+
+http://127.0.0.1:8080/message/sendText/agenda
+
+Payload enviado:
+
+{
+  "number": "559999999999",
+  "text": "Nova tarefa de Matemática"
+}
+7️⃣ Registrar envio da mensagem
+
+Para evitar duplicidade, é necessário salvar no banco.
+
+Tabela:
+
+WhatsAppEnvio
+
+Exemplo:
+
+id	evento_id	enviado_em
+1	22	2026-03-16
+PASSO IMPORTANTE
+
+Após enviar a mensagem:
+
+INSERT WhatsAppEnvio
+
+Exemplo código:
+
+WhatsAppEnvio.objects.create(
+    evento=evento,
+    enviado_em=timezone.now()
+)
+8️⃣ Controle de duplicidade
+
+Antes de enviar mensagem o sistema verifica:
+
+evento já foi enviado?
+
+Consulta:
+
+SELECT * FROM whatsapp_envio
+WHERE evento_id = ?
+
+Se existir:
+
+não envia novamente
+📊 Fluxo final simplificado
+executar_robo.py
+        ↓
+sync_agenda.py
+        ↓
+buscar conexões
+        ↓
+extrair_eventos()
+        ↓
+salvar eventos
+        ↓
+filtrar novos
+        ↓
+enviar WhatsApp
+        ↓
+INSERT WhatsAppEnvio
+📋 Exemplo de log ideal
+🚀 Iniciando robô
+🔎 Buscando conexões
+🏫 Turma 7A
+
+🤖 Executando robô
+📅 5 eventos encontrados
+
+💾 2 novos eventos salvos
+
+📤 Enviando WhatsApp
+✅ Mensagem enviada
+
+📝 Registrando envio

@@ -143,13 +143,9 @@ class AgendaEvento(models.Model):
     
 class WhatsAppEnvio(models.Model):
 
-    evento = models.ForeignKey(
-        AgendaEvento,
+    turma = models.ForeignKey(
+        Turma,
         on_delete=models.CASCADE
-    )
-
-    numero_destino = models.CharField(
-        max_length=20
     )
 
     hash_evento = models.CharField(
@@ -160,12 +156,8 @@ class WhatsAppEnvio(models.Model):
         auto_now_add=True
     )
 
-    status = models.CharField(
-        max_length=20,
-        default="enviado"
-    )
     class Meta:
-            unique_together = ("evento", "numero_destino", "hash_evento")
-    def __str__(self):
+        unique_together = ("turma", "hash_evento")
 
-        return f"{self.numero_destino} - {self.hash_evento}"
+    def __str__(self):
+        return f"Turma {self.turma} - {self.hash_evento[:12]}..."
