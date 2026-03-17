@@ -32,4 +32,4 @@ externalPort = 80
 
 [nix]
 channel = "stable-25_05"
-packages = ["cacert", "gitFull", "pgadmin4", "playwright-driver"]
+packages = ["cacert", "freetype", "gitFull", "lcms2", "libimagequant", "libjpeg", "libtiff", "libwebp", "libxcrypt", "openjpeg", "pgadmin4", "playwright-driver", "tcl", "tk", "zlib"]

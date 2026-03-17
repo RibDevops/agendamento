@@ -12,13 +12,15 @@
 
 <!-- Bootstrap Icons -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-<link rel="shortcut icon" href="{% static 'img/logo.png' %}" type="image/png">
+<link rel="shortcut icon" href="{% static 'img/icon.png' %}" type="image/png">
+<link rel="icon" href="{% static 'img/icon.png' %}" type="image/png">
 <link rel="manifest" href="{% static 'manifest.json' %}">
 <meta name="theme-color" content="#0d6efd">
+<meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Minha Carteira">
-<link rel="apple-touch-icon" href="{% static 'img/logo.png' %}">
+<meta name="apple-mobile-web-app-title" content="Agenda Escolar">
+<link rel="apple-touch-icon" href="{% static 'img/icon-apple.png' %}">
 
     <link href="{% static 'css/simple-sidebar.css' %}" rel="stylesheet">
     <link href="{% static 'css/fontawesome.min.css' %}" rel="stylesheet">
@@ -162,6 +164,10 @@ textarea{
         /* Sidebar layout */
         @media (min-width: 992px) {
             body { padding-right: 230px; }
+        }
+        /* Space for hamburger FAB on mobile */
+        @media (max-width: 991.98px) {
+            main { padding-bottom: 90px !important; }
         }
     </style>
 </head>
