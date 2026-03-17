@@ -32,6 +32,7 @@
                 </div>
             </div>
         </div>
+        {% if user.is_staff %}
         <div class="col-12 col-md-6 col-xl-4">
             <div class="card border-0 shadow-sm h-100">
                 <div class="card-body text-center py-4">
@@ -46,7 +47,7 @@
         </div>
     </div>
 
-    {% if user.is_staff %}
+    
     {# ── Seção Cadastros (staff) ── #}
     <h6 class="text-uppercase text-muted fw-semibold mb-3 mt-2" style="letter-spacing:.08em;">Cadastros</h6>
     <div class="row g-4 mb-4">
