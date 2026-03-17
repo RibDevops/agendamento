@@ -1449,3 +1449,5 @@ Watching for file changes with StatReloader
 Method Not Allowed (GET): /logout/
 /home/runner/workspace/agenda/views/views_login.py changed, reloading.
 Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+Not Found: /favicon.ico

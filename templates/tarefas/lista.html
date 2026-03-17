@@ -66,7 +66,13 @@
                     </div>
                     <h6 class="card-title fw-bold mb-1" id="titulo-{{ evento.id }}">{{ evento.titulo }}</h6>
                     {% if evento.descricao %}
-                    <p class="card-text text-muted small mb-3" style="white-space: pre-line;">{{ evento.descricao|truncatechars:180 }}</p>
+                    <div class="desc-wrapper mb-3" data-id="{{ evento.id }}" data-full="{{ evento.descricao|escape }}">
+                        <p class="card-text text-muted small mb-1 desc-short" style="white-space:pre-line;"></p>
+                        <p class="card-text text-muted small mb-1 desc-full d-none" style="white-space:pre-line;"></p>
+                        <button type="button" class="btn btn-link btn-sm p-0 text-primary desc-toggle" style="font-size:.8rem;">
+                            <i class="bi bi-chevron-down me-1"></i>Ver mais
+                        </button>
+                    </div>
                     {% endif %}
                     <button class="btn btn-sm w-100 btn-outline-success btn-marcar"
                         data-evento-id="{{ evento.id }}"
@@ -131,7 +137,54 @@
 (function () {
     const CONCLUIR_URL = "{% url 'cal:marcar_concluida' %}";
     const CSRF_TOKEN   = "{{ csrf_token }}";
+    const RESUMO_CHARS = 160;
 
+    /* ── Linkify: transforma URLs em links clicáveis ── */
+    function linkify(text) {
+        const escaped = text
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;');
+        return escaped.replace(
+            /(https?:\/\/[^\s<>"']+)/g,
+            '<a href="$1" target="_blank" rel="noopener noreferrer" class="text-primary fw-semibold text-break">$1</a>'
+        );
+    }
+
+    /* ── Inicializar blocos de descrição ── */
+    document.querySelectorAll('.desc-wrapper').forEach(function (wrapper) {
+        const fullText  = wrapper.dataset.full || '';
+        const shortEl   = wrapper.querySelector('.desc-short');
+        const fullEl    = wrapper.querySelector('.desc-full');
+        const toggleBtn = wrapper.querySelector('.desc-toggle');
+
+        /* texto resumido: corta em RESUMO_CHARS sem quebrar no meio de URL */
+        const isLong = fullText.length > RESUMO_CHARS;
+        const shortText = isLong ? fullText.slice(0, RESUMO_CHARS).trimEnd() + '…' : fullText;
+
+        shortEl.innerHTML = linkify(shortText);
+        fullEl.innerHTML  = linkify(fullText);
+
+        if (!isLong) {
+            toggleBtn.style.display = 'none';
+            return;
+        }
+
+        toggleBtn.addEventListener('click', function () {
+            const expanded = !fullEl.classList.contains('d-none');
+            if (expanded) {
+                fullEl.classList.add('d-none');
+                shortEl.classList.remove('d-none');
+                toggleBtn.innerHTML = '<i class="bi bi-chevron-down me-1"></i>Ver mais';
+            } else {
+                shortEl.classList.add('d-none');
+                fullEl.classList.remove('d-none');
+                toggleBtn.innerHTML = '<i class="bi bi-chevron-up me-1"></i>Ocultar';
+            }
+        });
+    });
+
+    /* ── Marcar / Desmarcar tarefa ── */
     document.querySelectorAll(".btn-marcar").forEach(function (btn) {
         btn.addEventListener("click", function () {
             const eventoId = btn.dataset.eventoId;
@@ -155,7 +208,6 @@
                     btn.disabled = false;
                     return;
                 }
-                // Reload to re-render sections correctly
                 window.location.reload();
             })
             .catch(function (err) {
