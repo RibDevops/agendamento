@@ -13,8 +13,8 @@ app_name = 'cal'
 urlpatterns = [
 
     # ─── Página inicial e estáticas ────────────────────────────────────────────
-    path('', views_user.home, name='home'),
-    path('bemvindo/', views_user.bemvindo, name='bemvindo'),
+    path('', views_user.bemvindo, name='bemvindo'),
+    path('home/', views_user.home, name='home'),
     path('contato/', views_user.contato, name='contato'),
     path('manual/', views_user.manual_publico, name='manual_publico'),
 
