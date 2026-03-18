@@ -118,6 +118,9 @@ def resetar_senha(request, user_id):
 @login_required
 @staff_member_required
 def desativar_usuario(request, user_id):
+    if request.method != 'POST':
+        messages.error(request, 'Ação inválida.')
+        return redirect('cal:listar_usuarios')
     user = get_object_or_404(User, id=user_id)
     user.is_active = False
     user.save()

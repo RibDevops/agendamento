@@ -46,6 +46,15 @@ class UserRegisterForm(forms.ModelForm):
 
 class UsuarioForm(forms.ModelForm):
 
+    password = forms.CharField(
+        widget=forms.PasswordInput(attrs={"class": "form-control", "placeholder": "Senha"}),
+        label="Senha",
+    )
+    confirmar_senha = forms.CharField(
+        widget=forms.PasswordInput(attrs={"class": "form-control", "placeholder": "Confirmar senha"}),
+        label="Confirmar Senha",
+    )
+
     class Meta:
         model = User
         fields = ["username", "email", "first_name", "last_name", "is_staff"]
@@ -56,6 +65,19 @@ class UsuarioForm(forms.ModelForm):
             "last_name": forms.TextInput(attrs={"class": "form-control"}),
             "is_staff": forms.CheckboxInput(attrs={"class": "form-check-input"}),
         }
+
+    def clean(self):
+        dados = super().clean()
+        if dados.get("password") != dados.get("confirmar_senha"):
+            raise forms.ValidationError("As senhas não coincidem.")
+        return dados
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.set_password(self.cleaned_data["password"])
+        if commit:
+            user.save()
+        return user
 
 
 class UsuarioUpdateForm(forms.ModelForm):
